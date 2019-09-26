@@ -4,22 +4,34 @@ import "./home.scss";
 export default () => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
+  const [currentTask, setCurrentTask] = useState("");
   const [isInputShowing, setisInputShowing] = useState(false);
-  const addTask = newTask => {
+  const addTask = () => {
     setTasks(prevTasks => {
-      return [...prevTasks, task];
+      return [...prevTasks, { task, status: "todo" }];
     });
+    setTask("");
   };
   const showAddInput = () => {
-    setisInputShowing(true);
+    return setisInputShowing(true);
+  };
+
+  const putTaskInProgress = task => {
+    task.status = "progress";
+    setCurrentTask(task);
+    return;
+  };
+  const putTaskInDone = task => {
+    console.log("done", task);
+    task.status = "done";
+    setCurrentTask("");
+    return;
   };
 
   useEffect(() => {
-    const arr = ["yo", "ui", "ménan"];
-    setTasks(prevTasks => {
-      return [...prevTasks, ...arr];
-    });
-  }, []);
+    console.log("useeffet");
+  }, [tasks]);
+
   return (
     <>
       <section className="columns tasks">
@@ -28,9 +40,11 @@ export default () => {
         </header>
         <div className="body">
           {isInputShowing ? (
-            <div className="add">
+            <div className="add add-second-step">
               <input
                 type="text"
+                placeholder="Title of the task"
+                value={task}
                 onChange={e => {
                   setTask(e.target.value);
                 }}
@@ -38,14 +52,38 @@ export default () => {
               <button onClick={addTask}>Add Task</button>
             </div>
           ) : (
-            <div className="add" onClick={showAddInput}>
+            <div className="add add-first-step" onClick={showAddInput}>
               <i className="fas fa-plus-circle"></i>
               <span>Add a task</span>
             </div>
           )}
           {tasks ? (
             tasks.map((elem, i) => {
-              return <h1 key={i}>{elem}</h1>;
+              if (elem.status !== "todo") return "";
+
+              return (
+                <div key={"todo" + i} className="task">
+                  <div className="p-container">
+                    <p>{elem.task}</p>
+                  </div>
+                  <div className="buttons">
+                    <button
+                      onClick={() => {
+                        putTaskInProgress(elem);
+                      }}
+                    >
+                      In Progress
+                    </button>
+                    <button
+                      onClick={() => {
+                        putTaskInDone(elem);
+                      }}
+                    >
+                      Done
+                    </button>
+                  </div>
+                </div>
+              );
             })
           ) : (
             <></>
@@ -56,13 +94,56 @@ export default () => {
         <header>
           <h2>In progress</h2>
         </header>
-        <div className="body"></div>
+        <div className="body">
+          {tasks ? (
+            tasks.map((elem, i) => {
+              if (elem.status === "progress") {
+                return (
+                  <div key={"progress" + i} className="task">
+                    <div className="p-container">
+                      <p>{elem.task}</p>
+                    </div>
+                    <div className="buttons">
+                      <button
+                        onClick={() => {
+                          putTaskInDone(elem);
+                        }}
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+              return "";
+            })
+          ) : (
+            <></>
+          )}
+        </div>
       </section>
       <section className="columns done">
         <header>
           <h2>Done</h2>
         </header>
-        <div className="body"></div>
+        <div className="body">
+          {tasks ? (
+            tasks.map((elem, i) => {
+              if (elem.status === "done") {
+                return (
+                  <div key={"done" + i} className="task">
+                    <div className="p-container">
+                      <p>{elem.task}</p>
+                    </div>
+                  </div>
+                );
+              }
+              return "";
+            })
+          ) : (
+            <></>
+          )}
+        </div>
       </section>
     </>
   );
