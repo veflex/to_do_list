@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import { Scrollbars } from 'react-custom-scrollbars';
 import "./home.scss";
 
 export default () => {
   const [todos, setTodos] = useState([]);
   const [inProgress, setInProgress] = useState([]);
   const [dones, setDones] = useState([]);
-  const [task, setTask] = useState("");
+  const [inputTask, setInputTask] = useState("");
   const [isInputShowing, setisInputShowing] = useState(false);
+
+
   const addNewTask = () => {
-    console.log(task);
-    addTask({ task, status: "todo" }, setTodos);
-    setTask("");
+    addTask({ task: inputTask, status: "todo" }, setTodos);
+    setInputTask("");
   };
   const showAddInput = () => {
     return setisInputShowing(true);
@@ -65,9 +67,9 @@ export default () => {
               <input
                 type="text"
                 placeholder="Title of the task"
-                value={task}
+                value={inputTask}
                 onChange={e => {
-                  setTask(e.target.value);
+                  setInputTask(e.target.value);
                 }}
               />
               <button onClick={addNewTask}>Add Task</button>
@@ -78,6 +80,8 @@ export default () => {
               <span>Add a task</span>
             </div>
           )}
+          <div className="list-container">
+          <Scrollbars>
           {todos ? (
             todos.map((task, i) => {
               return (
@@ -107,13 +111,15 @@ export default () => {
           ) : (
             <></>
           )}
+          </Scrollbars>
+          </div>
         </div>
       </section>
       <section className="columns progress">
         <header>
           <h2>In progress</h2>
         </header>
-        <div className="body">
+        <div className="body list-container">
           {inProgress ? (
             inProgress.map((task, i) => {
               return (
@@ -122,6 +128,13 @@ export default () => {
                     <p>{task.task}</p>
                   </div>
                   <div className="buttons">
+                    <button
+                      onClick={() => {
+                        changeTaskStatus(task, "todo");
+                      }}
+                    >
+                      Todo
+                    </button>
                     <button
                       onClick={() => {
                         changeTaskStatus(task, "done");
@@ -142,7 +155,7 @@ export default () => {
         <header>
           <h2>Done</h2>
         </header>
-        <div className="body">
+        <div className="body list-container">
           {dones ? (
             dones.map((task, i) => {
               return (
@@ -150,6 +163,20 @@ export default () => {
                   <div className="p-container">
                     <p>{task.task}</p>
                   </div>
+                  <button
+                    onClick={() => {
+                      changeTaskStatus(task, "todo");
+                    }}
+                  >
+                    Todo
+                    </button>
+                  <button
+                    onClick={() => {
+                      changeTaskStatus(task, "inProgress");
+                    }}
+                  >
+                    In Progress
+                    </button>
                 </div>
               );
             })
