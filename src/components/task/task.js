@@ -3,6 +3,7 @@ import "./task.scss";
 
 const task = props => {
   const { task, button1, button2 } = props;
+  console.log(task, button1, button2);
   return (
     <div className="task">
       <div className="p-container">

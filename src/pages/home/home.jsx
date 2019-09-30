@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Scrollbars } from "react-custom-scrollbars";
 import "./home.scss";
 
 import Column from "./../../components/column/column";
@@ -8,12 +9,12 @@ export default () => {
   const [todos, setTodos] = useState([]);
   const [inProgress, setInProgress] = useState([]);
   const [dones, setDones] = useState([]);
-  const [task, setTask] = useState("");
+  const [inputTask, setInputTask] = useState("");
   const [isInputShowing, setisInputShowing] = useState(false);
+
   const addNewTask = () => {
-    console.log(task);
-    addTask({ task, status: "todo" }, setTodos);
-    setTask("");
+    addTask({ task: inputTask, status: "todo" }, setTodos);
+    setInputTask("");
   };
   const showAddInput = () => {
     return setisInputShowing(true);
@@ -65,9 +66,9 @@ export default () => {
               <input
                 type="text"
                 placeholder="Title of the task"
-                value={task}
+                value={inputTask}
                 onChange={e => {
-                  setTask(e.target.value);
+                  setInputTask(e.target.value);
                 }}
               />
               <button onClick={addNewTask}>Add Task</button>
@@ -78,29 +79,34 @@ export default () => {
               <span>Add a task</span>
             </div>
           )}
-          {todos ? (
-            todos.map((task, i) => {
-              return (
-                <Task
-                  task={task}
-                  button1={{
-                    name: "In progress",
-                    action: () => {
-                      changeTaskStatus(task, "inProgress");
-                    }
-                  }}
-                  button2={{
-                    name: "Done",
-                    action: () => {
-                      changeTaskStatus(task, "done");
-                    }
-                  }}
-                ></Task>
-              );
-            })
-          ) : (
-            <></>
-          )}
+          <div className="list-container">
+            <Scrollbars autoHeight={true} autoHeightMax={`calc(80vh - 67.5px)`}>
+              {todos ? (
+                todos.map((task, i) => {
+                  return (
+                    <Task
+                      key={"todo" + i}
+                      task={task}
+                      button1={{
+                        name: "In progress",
+                        action: () => {
+                          changeTaskStatus(task, "inProgress");
+                        }
+                      }}
+                      button2={{
+                        name: "Done",
+                        action: () => {
+                          changeTaskStatus(task, "done");
+                        }
+                      }}
+                    ></Task>
+                  );
+                })
+              ) : (
+                <></>
+              )}
+            </Scrollbars>
+          </div>
         </div>
       </Column>
       <Column header="In Progress">
