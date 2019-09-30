@@ -1,73 +1,37 @@
 $green: #2e865a;
 $darkGrey: #282c34;
-.columns {
-  width: 30%;
-  height: 90%;
-  background: rgb(180, 174, 174);
-  border-radius: 1em;
-  min-width: 320px;
 
-  header {
-    padding: 1em;
-    border-bottom: 2px solid $green;
-    height: 10%;
+.body {
+  padding: 15px;
+  .add {
     display: flex;
-    align-items: center;
     justify-content: center;
-    h2 {
-      font-size: 1.5em;
-      color: $green;
-    }
-  }
-  .body {
-    padding: 15px;
-    .add {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      line-height: 40px;
-      margin-bottom: 20px;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 20px;
 
-      &.add-first-step {
-        cursor: pointer;
-        i {
-          margin-right: 1em;
-        }
-        &:hover {
+    &.add-first-step {
+      cursor: pointer;
+      i {
+        margin-right: 1em;
+      }
+      &:hover {
+        background: $green;
+        color: white;
+      }
+    }
+
+    &.add-second-step {
+      input {
+        border: 2px solid $green;
+        &:focus {
           background: $green;
           color: white;
-        }
-      }
-
-      &.add-second-step {
-        input {
-          border: 2px solid $green;
-          &:focus {
-            background: $green;
+          border: 2px solid $darkGrey;
+          &::placeholder {
             color: white;
-            border: 2px solid $darkGrey;
-            &::placeholder {
-              color: white;
-            }
           }
-        }
-      }
-    }
-
-    .task {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      .p-container {
-        width: 50%;
-        max-width: 200px;
-        p {
-          text-overflow: ellipsis;
-          font-size: 1em;
-          overflow: hidden;
-          white-space: nowrap;
         }
       }
     }

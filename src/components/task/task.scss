@@ -1,0 +1,16 @@
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  .p-container {
+    width: 50%;
+    max-width: 200px;
+    p {
+      text-overflow: ellipsis;
+      font-size: 1em;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

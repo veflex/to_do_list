@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./home.scss";
 
+import Column from "./../../components/column/column";
+import Task from "./../../components/task/task";
+
 export default () => {
   const [todos, setTodos] = useState([]);
   const [inProgress, setInProgress] = useState([]);
@@ -55,10 +58,7 @@ export default () => {
 
   return (
     <>
-      <section className="columns tasks">
-        <header>
-          <h2>Todos</h2>
-        </header>
+      <Column header="Todo">
         <div className="body">
           {isInputShowing ? (
             <div className="add add-second-step">
@@ -81,83 +81,82 @@ export default () => {
           {todos ? (
             todos.map((task, i) => {
               return (
-                <div key={"todo" + i} className="task">
-                  <div className="p-container">
-                    <p>{task.task}</p>
-                  </div>
-                  <div className="buttons">
-                    <button
-                      onClick={() => {
-                        changeTaskStatus(task, "inProgress");
-                      }}
-                    >
-                      In Progress
-                    </button>
-                    <button
-                      onClick={() => {
-                        changeTaskStatus(task, "done");
-                      }}
-                    >
-                      Done
-                    </button>
-                  </div>
-                </div>
+                <Task
+                  task={task}
+                  button1={{
+                    name: "In progress",
+                    action: () => {
+                      changeTaskStatus(task, "inProgress");
+                    }
+                  }}
+                  button2={{
+                    name: "Done",
+                    action: () => {
+                      changeTaskStatus(task, "done");
+                    }
+                  }}
+                ></Task>
               );
             })
           ) : (
             <></>
           )}
         </div>
-      </section>
-      <section className="columns progress">
-        <header>
-          <h2>In progress</h2>
-        </header>
+      </Column>
+      <Column header="In Progress">
         <div className="body">
           {inProgress ? (
             inProgress.map((task, i) => {
               return (
-                <div key={"progress" + i} className="task">
-                  <div className="p-container">
-                    <p>{task.task}</p>
-                  </div>
-                  <div className="buttons">
-                    <button
-                      onClick={() => {
-                        changeTaskStatus(task, "done");
-                      }}
-                    >
-                      Done
-                    </button>
-                  </div>
-                </div>
+                <Task
+                  task={task}
+                  button1={{
+                    name: "Todo",
+                    action: () => {
+                      changeTaskStatus(task, "todo");
+                    }
+                  }}
+                  button2={{
+                    name: "Done",
+                    action: () => {
+                      changeTaskStatus(task, "done");
+                    }
+                  }}
+                ></Task>
               );
             })
           ) : (
             <></>
           )}
         </div>
-      </section>
-      <section className="columns done">
-        <header>
-          <h2>Done</h2>
-        </header>
+      </Column>
+      <Column header="Done">
         <div className="body">
           {dones ? (
             dones.map((task, i) => {
               return (
-                <div key={"done" + i} className="task">
-                  <div className="p-container">
-                    <p>{task.task}</p>
-                  </div>
-                </div>
+                <Task
+                  task={task}
+                  button1={{
+                    name: "Todo",
+                    action: () => {
+                      changeTaskStatus(task, "todo");
+                    }
+                  }}
+                  button2={{
+                    name: "In progress",
+                    action: () => {
+                      changeTaskStatus(task, "inProgress");
+                    }
+                  }}
+                ></Task>
               );
             })
           ) : (
             <></>
           )}
         </div>
-      </section>
+      </Column>
     </>
   );
 };
